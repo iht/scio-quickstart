@@ -19,8 +19,8 @@ lazy val root: Project = project
   .in(file("."))
   .settings(commonSettings)
   .settings(
-    name := "scio-scala-workshop-beam-summit",
-    description := "scio-scala-workshop-beam-summit",
+    name := "scio-quickstart",
+    description := "scio-quickstart",
     publish / skip := true,
     run / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     libraryDependencies ++= Seq(
