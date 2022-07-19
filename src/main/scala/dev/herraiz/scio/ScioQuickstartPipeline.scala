@@ -37,6 +37,8 @@ object ScioQuickstartPipeline {
     val inputFile: String = args("input-file")
     val numWords: Int = args("num-words").toInt
     val outputFile: String = args("output-file")
+
+    runPipeline(inputFile, numWords, outputFile)
   }
 
   def runPipeline(inputFile: String, numWords: Int, outputFile: String)(implicit sc: ScioContext): Unit = {
@@ -52,6 +54,8 @@ object ScioQuickstartPipeline {
     }
     val csvContent: SCollection[String] = csvLines.map(_.mkString("\n"))
     csvContent.saveAsTextFile(outputFile)
+
+    sc.run()
   }
 
   def sanitizeWord(w: String): String = {
