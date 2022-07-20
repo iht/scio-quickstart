@@ -18,9 +18,20 @@
 package dev.herraiz.scio
 
 import com.spotify.scio._
+import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values.SCollection
 
 object ScioQuickstartPipeline {
+
+  val thingsToRemove: List[Char] =
+    List('.', ',', '?', '!', '¿', ';')
+
+  val accents: Map[Char, Char] = Map(
+    'á' -> 'a',
+    'é' -> 'e',
+    'í' -> 'i',
+    'ó' -> 'o',
+    'ú' -> 'u')
 
   def main(cmdLineArgs: Array[String]): Unit = {
     val (sc: ScioContext, args: Args) = ContextAndArgs(cmdLineArgs)
@@ -33,8 +44,31 @@ object ScioQuickstartPipeline {
     runPipeline(inputFile, numWords, outputFile)
   }
 
+  def sanitizeWord(w: String): String = {
+    w.toLowerCase
+      .filter(c => !thingsToRemove.contains(c))
+      .map(c => accents.getOrElse(c, c))
+  }
+
+
   def runPipeline(inputFile: String, numWords: Int, outputFile: String)(implicit sc: ScioContext): Unit = {
-    ???
+    val lines: SCollection[String] = sc.textFile(inputFile)
+    // ["En un lugar de La Mancha...", "de cuyo nombre no quiero..."]
+    val words: SCollection[String] = lines.flatMap(_.split(" "))
+    // ["En", "un", "lugar", ...]
+    val clean: SCollection[String] = words.map(sanitizeWord)
+    // ["en", "un", "lugar", ...]
+    val counted: SCollection[(String, Long)] = clean.countByValue
+    val swapped: SCollection[(Long, String)] = counted.swap
+    val topWords: SCollection[Iterable[(Long, String)]] = swapped.top(numWords)
+    val csvLines: SCollection[String] = topWords.map {
+      t: Iterable[(Long, String)] =>
+        val csvLines: Iterable[String] = t.map { case (n: Long, w: String) =>
+          List(n.toString, w).mkString(",")  // "7,mancha"
+        }
+        csvLines.mkString("\n")
+    }
+    csvLines.saveAsTextFile(outputFile)
 
     sc.run()
   }
