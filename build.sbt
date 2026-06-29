@@ -6,7 +6,7 @@ val beamVersion = "2.59.0"
 lazy val commonSettings = Def.settings(
   organization := "dev.herraiz",
   version := "0.1.0-SNAPSHOT",
-  scalaVersion := "2.13.18",
+  scalaVersion := "3.8.4",
   scalacOptions ++= Seq("-target:jvm-17",
                         "-deprecation",
                         "-feature",
