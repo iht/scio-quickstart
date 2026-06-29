@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Set up SBT
-        uses: sbt/setup-sbt-action@v1
+        uses: sbt/setup-sbt@v1
 
       - name: Compile and Test
         run: sbt compile test
