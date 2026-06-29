@@ -24,3 +24,12 @@ jobs:
 
       - name: Compile and Test
         run: sbt compile test
+
+      - name: Stage Application
+        run: sbt stage
+
+      - name: Run Pipeline E2E Test
+        run: |
+          ./target/universal/stage/bin/scio-quickstart --input-file=./data/sample.txt --output-file=tmp/out --num-words=10
+          test -f tmp/out/part-00000-of-00001.txt
+          echo "Pipeline executed successfully and output file verified!"
