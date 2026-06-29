@@ -1,49 +1,92 @@
-# Scio quickstart
+# Scio Quickstart
 
-This repository contains a sample pipeline for starting with [Scio](https://spotify.github.io/scio/), the Scala 
-framework to develop Apache Beam pipelines.
+This repository contains a sample pipeline for getting started with [Scio](https://spotify.github.io/scio/), the Scala framework for [Apache Beam](https://beam.apache.org/) pipelines.
 
-# Pipeline
+Fork or clone this repository so you can commit your changes in your own repository.
 
-The goal of this example is to count the words in Don Quixote, the famous novel by Miguel de Cervantes. The novel has
-several characters: Sancho, the buddy of Don Quixote; Dulcinea, the significant other of Don Quixote; Rocinante, the
-fearful horse of Don Quixote, etc. 
+## Repository Branches
 
-The pipeline does not only count the words, it also sorts the words by number of occurrences, and provides an answer 
-to an existential question: who is mentioned more in the novel, Sancho or Dulcinea?
+This repository is organized into two main branches:
 
-Let's find out with the help of Scio.
+* **`main`**: The default branch. It contains the exercise skeleton code with incomplete pipeline logic (`runPipeline` method set to `???`). Use this branch to implement your own solution to the exercise.
+* **`solution`**: Contains the full reference implementation and solution. You can switch to this branch at any time to compare your progress or check the working pipeline:
+  ```bash
+  git checkout solution
+  ```
 
-## Compile
+---
 
-The first step to solve the mysterious question is to compile the code. For that, you will need to have installed SBT:
-* https://www.scala-sbt.org/
+## Prerequisites
 
-When you have installed, you can run
+To compile and run this project, ensure you have the following installed:
 
-* `sbt compile`  to compile the code (for instance, while you are developing the code for the pipeline)
-* `sbt stage` to produce a runnable package
+* **Java JDK**: JDK 17 or higher.
+* **SBT**: Scala Build Tool (v1.x or higher). See [installation instructions](https://www.scala-sbt.org/).
 
-## Input data
+---
 
-In the `data` directory you will find two files:
+## Exercise: Sancho vs. Dulcinea
 
-* `sample.txt`, small extract of the novel. You can use this for tests while you are developing the pipeline
-* `el_quijote.txt`, the full novel, to solve the important question about Sancho or Dulcinea
+The goal of this example pipeline is to process and analyze the text of *Don Quixote*, the famous novel by Miguel de Cervantes. The novel features several prominent characters, including Sancho Panza (Don Quixote's squire) and Dulcinea del Toboso (his romantic ideal).
 
-## Running the example
+The pipeline should:
+1. Read the input text files.
+2. Clean up punctuation, normalize casing, and tokenize words.
+3. Count word occurrences and sort them in descending order.
+4. Answer the existential question: **Who is mentioned more frequently in the novel, Sancho or Dulcinea?**
 
-Once you have run `sbt stage`, there will be a script in the directory `target/universal/stage/bin`. You can use that
-script to run the pipeline.
+---
 
-For instance, to find the top 10 words in the sample data:
+## Input Data
 
-`./target/universal/stage/bin/scio-quickstart --input-file=./data/sample.txt --output-file=tmp --num-words=10`
+The `data/` directory contains two text datasets:
 
-After that you should find a file with a name like ` part-00000-of-00001.txt` in the `tmp` subdirectory.
+* `muestra.txt`: A small extract of the novel, ideal for quick testing and debugging during pipeline development.
+* `el_quijote.txt`: The full text of the novel, used for final analysis to solve the Sancho vs. Dulcinea comparison.
 
-To run with the full data and top 100 words:
+---
 
-`./target/universal/stage/bin/scio-quickstart --input-file=./data/el_quijote.txt --output-file=tmp --num-words=100`
+## Development & Compilation
 
-Search for `sancho` and `dulcinea` in the output to solve this burning question.
+You can compile and build the repository using SBT:
+
+* **Compile the project**:
+  ```bash
+  sbt compile
+  ```
+* **Run directly via SBT**:
+  ```bash
+  sbt "run --input-file=./data/muestra.txt --output-file=tmp --num-words=10"
+  ```
+* **Launch interactive Scio REPL**:
+  ```bash
+  sbt repl/run
+  ```
+* **Package / Stage executable**:
+  ```bash
+  sbt stage
+  ```
+
+---
+
+## Running the Staged Executable
+
+Once you run `sbt stage`, an executable launcher script is generated under `target/universal/stage/bin/scio-quickstart`.
+
+### 1. Test run on sample data
+
+Find the top 10 words in the sample dataset:
+```bash
+./target/universal/stage/bin/scio-quickstart --input-file=./data/muestra.txt --output-file=tmp --num-words=10
+```
+
+The output will be written to text files inside the `tmp/` directory (e.g., `tmp/part-00000-of-00001.txt`).
+
+### 2. Full run on complete novel
+
+Process the full novel and retrieve the top 100 words:
+```bash
+./target/universal/stage/bin/scio-quickstart --input-file=./data/el_quijote.txt --output-file=tmp --num-words=100
+```
+
+Inspect the output file in `tmp/` to check the word counts for `sancho` and `dulcinea` and solve the mystery!
