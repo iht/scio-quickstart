@@ -2,18 +2,25 @@ import sbt._
 import Keys._
 
 val scioVersion = "0.15.8"
-val beamVersion = "2.39.0"
+val beamVersion = "2.59.0"
 lazy val commonSettings = Def.settings(
   organization := "dev.herraiz",
   version := "0.1.0-SNAPSHOT",
   scalaVersion := "2.13.8",
-  scalacOptions ++= Seq("-target:jvm-1.8",
+  scalacOptions ++= Seq("-target:jvm-17",
                         "-deprecation",
                         "-feature",
                         "-unchecked",
                         "-Ymacro-annotations"),
-  javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
-  libraryDependencySchemes += "com.github.luben" % "zstd-jni" % VersionScheme.Always
+  javacOptions ++= Seq("-source", "17", "-target", "17"),
+  libraryDependencySchemes += "com.github.luben" % "zstd-jni" % VersionScheme.Always,
+  dependencyOverrides ++= Seq(
+    "com.fasterxml.jackson.core" % "jackson-databind" % "2.15.4",
+    "com.fasterxml.jackson.core" % "jackson-core" % "2.15.4",
+    "com.fasterxml.jackson.core" % "jackson-annotations" % "2.15.4",
+    "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.15.4",
+    "com.fasterxml.jackson.dataformat" % "jackson-dataformat-xml" % "2.15.4"
+  )
 )
 
 lazy val root: Project = project
