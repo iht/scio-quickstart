@@ -16,11 +16,11 @@ lazy val commonSettings = Def.settings(
   javacOptions ++= Seq("-source", "17", "-target", "17"),
   libraryDependencySchemes += "com.github.luben" % "zstd-jni" % VersionScheme.Always,
   dependencyOverrides ++= Seq(
-    "com.fasterxml.jackson.core" % "jackson-databind" % "2.15.4",
-    "com.fasterxml.jackson.core" % "jackson-core" % "2.15.4",
-    "com.fasterxml.jackson.core" % "jackson-annotations" % "2.15.4",
+    "com.fasterxml.jackson.core" % "jackson-databind" % "2.22.2",
+    "com.fasterxml.jackson.core" % "jackson-core" % "2.22.2",
+    "com.fasterxml.jackson.core" % "jackson-annotations" % "2.22",
     "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % "2.22.2",
-    "com.fasterxml.jackson.dataformat" % "jackson-dataformat-xml" % "2.15.4"
+    "com.fasterxml.jackson.dataformat" % "jackson-dataformat-xml" % "2.22.2"
   )
 )
 
